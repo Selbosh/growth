@@ -12,15 +12,50 @@ jobs:
     name: Render-Book
     runs-on: macOS-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: r-lib/actions/setup-r@v1
-      - uses: r-lib/actions/setup-pandoc@v1
-      - name: Install rmarkdown
-        run: Rscript -e 'install.packages(c("rmarkdown","bookdown"))'
-      - name: Install other required packages
-        run: Rscript -e 'install.packages(c("lcmm", "lme4", "rstan"))'
+      - name: Checkout repo
+        uses: actions/checkout@v1
+        
+      - name: Set up R  
+        uses: r-lib/actions/setup-r@v1
+        
+      - name: Install pandoc
+        uses: r-lib/actions/setup-pandoc@v1
+        
+      - name: Query R dependencies
+        run: |
+          install.packages('remotes')
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
+          writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
+        shell: Rscript {0}
+        
+      - name: Cache R packages
+        if: runner.os != 'Windows'
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
+          
+      - name: Cache bookdown results
+        uses: actions/cache@v2
+        with:
+          path: _bookdown_files
+          key: bookdown-${{ hashFiles('**/*Rmd') }}
+          restore-keys: bookdown-
+          
+      - name: Install dependencies, if needed
+        run: Rscript -e 'remotes::install_deps(dependencies = TRUE)'
+        
+      - name: Session info
+        run: |
+          options(width = 100)
+          pkgs <- installed.packages()[, "Package"]
+          sessioninfo::session_info(pkgs, include_base = TRUE)
+        shell: Rscript {0}
+        
       - name: Render Book
         run: Rscript -e 'bookdown::render_book("index.Rmd")'
+        
       - uses: actions/upload-artifact@v1
         with:
           name: _book
