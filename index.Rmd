@@ -1,0 +1,30 @@
+---
+title: "Bayesian latent growth models with Stan"
+author: |
+  David Selby  
+  Centre for Epidemiology Versus Arthritis  
+  University of Manchester
+date: "Last compiled `r format(Sys.Date(), '%d %B %Y')`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [growth.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+papersize: a4
+github-repo: Selbosh/growth
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::write_bib(c(.packages(), 'rstan', 'lcmm', 'lme4'), file = 'packages.bib')
+```
+
+# Introduction {-}
+
+This is a living document, recording my current state of knowledge about growth mixture models (and related classes of models) and how to fit them using R and Stan.
+
+The motivation for this report is being able to fit growth curve models and latent class growth curve models using R [@R-base] and Stan [@R-rstan].
+There are various packages available for fitting growth models, but not necessarily for doing so in the flexible Bayesian way.
+
+Canonically, the main package to use in R for this purpose is `lcmm` [@lcmm2017] and the corresponding function in Stata is (I think) `traj`, itself a port of a SAS plugin.
+

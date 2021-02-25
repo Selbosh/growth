@@ -1,0 +1,51 @@
+# Background
+
+## Latent processes
+
+There are a many names for classes of models that describing repeated measures with (possibly heterogeneous) random effects.
+
+A _latent process mixed model_, as presented in the R package **lcmm** [@lcmm2017], is a term used to describe a generalized linear mixed model of the form
+\begin{equation}
+Y_{ij} = H\left( \Lambda(t_{ij}) + \varepsilon_{ij}~;~ \eta \right),
+(\#eq:lcmm-measure)
+\end{equation}
+where \(Y_{ij}\) is the response for subject \(i\) at occasion \(j\), at time point \(t_{ij}\) with independent normally-distributed measurement error \(\varepsilon_{ij}\).
+The function \(H(\cdot)\) represents a link function (parametrised by \(\eta\)) relating the response to the linear mixed model latent process given by
+\begin{equation}
+\Lambda(t) = X(t) \beta + Z(t) u_i,
+(\#eq:lcmm-latent)
+\end{equation}
+for covariate vectors \(Z(t) \subset X(t)\), fixed effects \(\beta\) and random effects \(u_i\).
+
+The link function \(H\) may be linear, and in the case of an identity link, the latent process reduces to a linear mixed model.
+Else it may represent a distribution function or quadratic L-spline basis.
+Psychology texts might refer to the same idea by the name _latent curve analysis_.
+Within the structural equation modelling framework, Equation \@ref(eq:lcmm-latent) describes the _structural_ model, while Equation \@ref(eq:lcmm-measure) is called the _measurement_ model.
+
+A mixture of such models is named a _latent class mixed model_, growth mixture model, group-based trajectory model, heterogeneous mixed model or mixed mixture model, depending on the correlation structure of the random effects.
+
+The class or cluster of subject \(i\) is denoted by a latent discrete random variable \(c_i\) and follows a multinomial logistic model (possibly with covariates predicting class membership).
+Then for each subject \(i\), the model \@ref(eq:lcmm-measure) is conditional on the class, with fixed effects of covariates may be either common over the classes or class-specific, and random effects that are class specific.
+See the [`lcmm::hlme()` vignette](https://cran.r-project.org/web/packages/lcmm/vignettes/latent_class_model_with_hlme.html) for examples.
+
+The package **lcmm** supports (via the `hlme` and `lcmm` functions) random effects that have either common or heterogeneous (but similarly structured) covariances (toggled via the `nwg` argument).
+Meanwhile R package **flexmix** allows for varying correlation structure between the latent classes; the differences between the two packages are outlined in detail by @Wardenaar2020 [ and compared with the proprietary statistical software Mplus].
+These tools are frequentist, based on maximum likelihood esimation; later we will evaluate Bayesian alternatives that work via Markov chain Monte Carlo (MCMC) sampling.
+
+## Semantic growth
+
+Some authors draw distinctions between growth curve modelling, growth mixture modelling and group-based trajectory modelling [@Nagin2010; @Nagin2014] but the differences between these approaches are largely semantic or contextual and essentially the three methods describe the same thing.
+At worst, the techniques are special cases of one another: e.g. growth curve modelling being a degenerate growth mixture model with one mixture component.
+The word 'curve' or 'trajectory' is redundant and 'group' is synonymous with a mixture component; these semantic variations undoubtedly confuse more than they help clarify.
+
+_Growth models_ are generalized linear models with optional random effects [@Rosen1991].
+Thus a growth model curve is an example of a multilevel linear model with random coefficients [@Steele2007] and can be fitted using standard software, such as the R package **lme4** [@R-lme4].
+There is nothing particularly essential about repeated measures being longitudinal, either: the variable representing time (or age) may be exchanged for any other continuous predictor.
+
+Here we describe only a family of related methods, aiming to distinguish by explicit technical differences rather than arbitrary naming conventions.
+Every such model can be explained in terms of a hierarchical Bayesian model, aided by the expressive power of the Stan language [@R-rstan].
+
+_To be continued..._
+
+<!--- @Verbeke1996 - motivates having class-specific random effects-->
+

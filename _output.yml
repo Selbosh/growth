@@ -1,0 +1,16 @@
+bookdown::gitbook:
+  df_print: kable
+  css: style.css
+  config:
+    toc:
+      before: |
+        <li><a href="./">Bayesian growth models</a></li>
+      after: |
+        <li><a href="https://www.cfe.manchester.ac.uk" target="blank">Centre for Epidemiology Versus Arthritis</a></li>
+    download: ["pdf"]
+    split_by: section
+    view: https://github.com/Selbosh/growth/blob/master/%s
+bookdown::pdf_book:
+  latex_engine: xelatex
+  citation_package: natbib
+  keep_tex: yes
