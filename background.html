@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Part 1 Background | Bayesian latent growth models with Stan</title>
+  <meta name="description" content="Part 1 Background | Bayesian latent growth models with Stan" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Part 1 Background | Bayesian latent growth models with Stan" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  <meta name="github-repo" content="Selbosh/growth" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Part 1 Background | Bayesian latent growth models with Stan" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="references.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Bayesian growth models</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="1" data-path="background.html"><a href="background.html"><i class="fa fa-check"></i><b>1</b> Background</a><ul>
+<li class="chapter" data-level="1.1" data-path="background.html"><a href="background.html#latent-processes"><i class="fa fa-check"></i><b>1.1</b> Latent processes</a></li>
+<li class="chapter" data-level="1.2" data-path="background.html"><a href="background.html#semantic-growth"><i class="fa fa-check"></i><b>1.2</b> Semantic growth</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://www.cfe.manchester.ac.uk" target="blank">Centre for Epidemiology Versus Arthritis</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Bayesian latent growth models with Stan</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="background" class="section level1">
+<h1><span class="header-section-number">Part 1</span> Background</h1>
+<div id="latent-processes" class="section level2">
+<h2><span class="header-section-number">1.1</span> Latent processes</h2>
+<p>There are a many names for classes of models that describing repeated measures with (possibly heterogeneous) random effects.</p>
+<p>A <em>latent process mixed model</em>, as presented in the R package <strong>lcmm</strong> <span class="citation">(<span class="citeproc-not-found" data-reference-id="lcmm2017"><strong>???</strong></span>)</span>, is a term used to describe a generalized linear mixed model of the form
+<span class="math display" id="eq:lcmm-measure">\[\begin{equation}
+Y_{ij} = H\left( \Lambda(t_{ij}) + \varepsilon_{ij}~;~ \eta \right),
+\tag{1.1}
+\end{equation}\]</span>
+where <span class="math inline">\(Y_{ij}\)</span> is the response for subject <span class="math inline">\(i\)</span> at occasion <span class="math inline">\(j\)</span>, at time point <span class="math inline">\(t_{ij}\)</span> with independent normally-distributed measurement error <span class="math inline">\(\varepsilon_{ij}\)</span>.
+The function <span class="math inline">\(H(\cdot)\)</span> represents a link function (parametrised by <span class="math inline">\(\eta\)</span>) relating the response to the linear mixed model latent process given by
+<span class="math display" id="eq:lcmm-latent">\[\begin{equation}
+\Lambda(t) = X(t) \beta + Z(t) u_i,
+\tag{1.2}
+\end{equation}\]</span>
+for covariate vectors <span class="math inline">\(Z(t) \subset X(t)\)</span>, fixed effects <span class="math inline">\(\beta\)</span> and random effects <span class="math inline">\(u_i\)</span>.</p>
+<p>The link function <span class="math inline">\(H\)</span> may be linear, and in the case of an identity link, the latent process reduces to a linear mixed model.
+Else it may represent a distribution function or quadratic L-spline basis.
+Psychology texts might refer to the same idea by the name <em>latent curve analysis</em>.
+Within the structural equation modelling framework, Equation <a href="background.html#eq:lcmm-latent">(1.2)</a> describes the <em>structural</em> model, while Equation <a href="background.html#eq:lcmm-measure">(1.1)</a> is called the <em>measurement</em> model.</p>
+<p>A mixture of such models is named a <em>latent class mixed model</em>, growth mixture model, group-based trajectory model, heterogeneous mixed model or mixed mixture model, depending on the correlation structure of the random effects.</p>
+<p>The class or cluster of subject <span class="math inline">\(i\)</span> is denoted by a latent discrete random variable <span class="math inline">\(c_i\)</span> and follows a multinomial logistic model (possibly with covariates predicting class membership).
+Then for each subject <span class="math inline">\(i\)</span>, the model <a href="background.html#eq:lcmm-measure">(1.1)</a> is conditional on the class, with fixed effects of covariates may be either common over the classes or class-specific, and random effects that are class specific.
+See the <a href="https://cran.r-project.org/web/packages/lcmm/vignettes/latent_class_model_with_hlme.html"><code>lcmm::hlme()</code> vignette</a> for examples.</p>
+<p>The package <strong>lcmm</strong> supports (via the <code>hlme</code> and <code>lcmm</code> functions) random effects that have either common or heterogeneous (but similarly structured) covariances (toggled via the <code>nwg</code> argument).
+Meanwhile R package <strong>flexmix</strong> allows for varying correlation structure between the latent classes; the differences between the two packages are outlined in detail by <span class="citation">Wardenaar (<a href="#ref-Wardenaar2020" role="doc-biblioref">2020</a>  and compared with the proprietary statistical software Mplus)</span>.
+These tools are frequentist, based on maximum likelihood esimation; later we will evaluate Bayesian alternatives that work via Markov chain Monte Carlo (MCMC) sampling.</p>
+</div>
+<div id="semantic-growth" class="section level2">
+<h2><span class="header-section-number">1.2</span> Semantic growth</h2>
+<p>Some authors draw distinctions between growth curve modelling, growth mixture modelling and group-based trajectory modelling <span class="citation">(Nagin and Odgers <a href="#ref-Nagin2010" role="doc-biblioref">2010</a>; Nagin <a href="#ref-Nagin2014" role="doc-biblioref">2014</a>)</span> but the differences between these approaches are largely semantic or contextual and essentially the three methods describe the same thing.
+At worst, the techniques are special cases of one another: e.g. growth curve modelling being a degenerate growth mixture model with one mixture component.
+The word ‘curve’ or ‘trajectory’ is redundant and ‘group’ is synonymous with a mixture component; these semantic variations undoubtedly confuse more than they help clarify.</p>
+<p><em>Growth models</em> are generalized linear models with optional random effects <span class="citation">(Rosen <a href="#ref-Rosen1991" role="doc-biblioref">1991</a>)</span>.
+Thus a growth model curve is an example of a multilevel linear model with random coefficients <span class="citation">(Steele <a href="#ref-Steele2007" role="doc-biblioref">2007</a>)</span> and can be fitted using standard software, such as the R package <strong>lme4</strong> <span class="citation">(<span class="citeproc-not-found" data-reference-id="R-lme4"><strong>???</strong></span>)</span>.
+There is nothing particularly essential about repeated measures being longitudinal, either: the variable representing time (or age) may be exchanged for any other continuous predictor.</p>
+<p>Here we describe only a family of related methods, aiming to distinguish by explicit technical differences rather than arbitrary naming conventions.
+Every such model can be explained in terms of a hierarchical Bayesian model, aided by the expressive power of the Stan language <span class="citation">(<span class="citeproc-not-found" data-reference-id="R-rstan"><strong>???</strong></span>)</span>.</p>
+<p><em>To be continued…</em></p>
+<!--- @Verbeke1996 - motivates having class-specific random effects-->
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-Nagin2014">
+<p>Nagin, Daniel S. 2014. “Group-Based Trajectory Modeling: An Overview.” <em>Annals of Nutrition and Metabolism</em> 65 (2-3): 205–10. <a href="https://doi.org/10.1159/000360229">https://doi.org/10.1159/000360229</a>.</p>
+</div>
+<div id="ref-Nagin2010">
+<p>Nagin, Daniel S., and Candice L. Odgers. 2010. “Group-Based Trajectory Modeling in Clinical Research.” <em>Annual Review of Clinical Psychology</em> 6 (1): 109–38. <a href="https://doi.org/10.1146/annurev.clinpsy.121208.131413">https://doi.org/10.1146/annurev.clinpsy.121208.131413</a>.</p>
+</div>
+<div id="ref-Rosen1991">
+<p>Rosen, Dietrich Von. 1991. “The Growth Curve Model: A Review.” <em>Communications in Statistics - Theory and Methods</em> 20 (9): 2791–2822. <a href="https://doi.org/10.1080/03610929108830668">https://doi.org/10.1080/03610929108830668</a>.</p>
+</div>
+<div id="ref-Steele2007">
+<p>Steele, Fiona. 2007. “Multilevel Models for Longitudinal Data.” <em>Journal of the Royal Statistical Society: Series A (Statistics in Society)</em> 0 (0): 071029094155001–??? <a href="https://doi.org/10.1111/j.1467-985x.2007.00509.x">https://doi.org/10.1111/j.1467-985x.2007.00509.x</a>.</p>
+</div>
+<div id="ref-Wardenaar2020">
+<p>Wardenaar, Klaas J. 2020. “Latent Class Growth Analysis and Growth Mixture Modeling Using R: A Tutorial for Two R-Packages and a Comparison with Mplus.” April. <a href="https://doi.org/10.31234/osf.io/m58wx">https://doi.org/10.31234/osf.io/m58wx</a>.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/Selbosh/growth/blob/master/01-background.Rmd",
+"text": null
+},
+"download": ["_main.pdf"],
+"toc": {
+"collapse": "subsection"
+},
+"split_by": "section"
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
