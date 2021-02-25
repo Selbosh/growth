@@ -1,0 +1,11 @@
+Package: growth
+Title: Bayesian latent growth models with Stan
+Description: Placeholder file to list R package dependencies for the book.
+Depends:
+    bookdown
+Imports: 
+    rstan,
+    lme4,
+    lcmm,
+    brms,
+    rstanarm
