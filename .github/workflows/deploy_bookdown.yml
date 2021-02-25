@@ -44,7 +44,7 @@ jobs:
           restore-keys: bookdown-
           
       - name: Install dependencies, if needed
-        run: Rscript -e 'remotes::install_deps(dependencies = TRUE)'
+        run: Rscript -e 'remotes::install_deps(dependencies = TRUE, upgrade = FALSE)'
         
       - name: Session info
         run: |
