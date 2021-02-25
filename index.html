@@ -73,7 +73,7 @@
 <li class="chapter" data-level="1.1" data-path="background.html"><a href="background.html#latent-processes"><i class="fa fa-check"></i><b>1.1</b> Latent processes</a></li>
 <li class="chapter" data-level="1.2" data-path="background.html"><a href="background.html#semantic-growth"><i class="fa fa-check"></i><b>1.2</b> Semantic growth</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="" data-path="bibliography.html"><a href="bibliography.html"><i class="fa fa-check"></i>Bibliography</a></li>
 <li class="divider"></li>
 <li><a href="https://www.cfe.manchester.ac.uk" target="blank">Centre for Epidemiology Versus Arthritis</a></li>
 
@@ -106,11 +106,17 @@ University of Manchester</p></em></p>
 <p>This is a living document, recording my current state of knowledge about growth mixture models (and related classes of models) and how to fit them using R and Stan.</p>
 <p>The motivation for this report is being able to fit growth curve models and latent class growth curve models using R <span class="citation">(R Core Team <a href="#ref-R-base" role="doc-biblioref">2021</a>)</span> and Stan <span class="citation">(<span class="citeproc-not-found" data-reference-id="R-rstan"><strong>???</strong></span>)</span>.
 There are various packages available for fitting growth models, but not necessarily for doing so in the flexible Bayesian way.</p>
-<p>Canonically, the main package to use in R for this purpose is <code>lcmm</code> <span class="citation">(<span class="citeproc-not-found" data-reference-id="lcmm2017"><strong>???</strong></span>)</span> and the corresponding function in Stata is (I think) <code>traj</code>, itself a port of a SAS plugin.</p>
+<p>Canonically, the main package to use in R for this purpose is <code>lcmm</code> <span class="citation">(Proust-Lima, Philipps, and Liquet <a href="#ref-lcmm2017" role="doc-biblioref">2017</a>)</span> and the corresponding plugin in Stata is <code>traj</code> <span class="citation">(Jones and Nagin <a href="#ref-Jones2013" role="doc-biblioref">2013</a>)</span>.</p>
 
 </div>
 <h3>References</h3>
 <div id="refs" class="references">
+<div id="ref-Jones2013">
+<p>Jones, Bobby L., and Daniel S. Nagin. 2013. “A Note on a Stata Plugin for Estimating Group-Based Trajectory Models.” <em>Sociological Methods &amp; Research</em> 42 (4): 608–13. <a href="https://doi.org/10.1177/0049124113503141">https://doi.org/10.1177/0049124113503141</a>.</p>
+</div>
+<div id="ref-lcmm2017">
+<p>Proust-Lima, Cécile, Viviane Philipps, and Benoit Liquet. 2017. “Estimation of Extended Mixed Models Using Latent Classes and Latent Processes: The R Package lcmm.” <em>Journal of Statistical Software</em> 78 (2): 1–56. <a href="https://doi.org/10.18637/jss.v078.i02">https://doi.org/10.18637/jss.v078.i02</a>.</p>
+</div>
 <div id="ref-R-base">
 <p>R Core Team. 2021. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/">https://www.R-project.org/</a>.</p>
 </div>

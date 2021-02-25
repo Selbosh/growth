@@ -30,7 +30,7 @@
   
   
 <link rel="prev" href="index.html"/>
-<link rel="next" href="references.html"/>
+<link rel="next" href="bibliography.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -73,7 +73,7 @@
 <li class="chapter" data-level="1.1" data-path="background.html"><a href="background.html#latent-processes"><i class="fa fa-check"></i><b>1.1</b> Latent processes</a></li>
 <li class="chapter" data-level="1.2" data-path="background.html"><a href="background.html#semantic-growth"><i class="fa fa-check"></i><b>1.2</b> Semantic growth</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="" data-path="bibliography.html"><a href="bibliography.html"><i class="fa fa-check"></i>Bibliography</a></li>
 <li class="divider"></li>
 <li><a href="https://www.cfe.manchester.ac.uk" target="blank">Centre for Epidemiology Versus Arthritis</a></li>
 
@@ -99,7 +99,7 @@
 <div id="latent-processes" class="section level2">
 <h2><span class="header-section-number">1.1</span> Latent processes</h2>
 <p>There are a many names for classes of models that describing repeated measures with (possibly heterogeneous) random effects.</p>
-<p>A <em>latent process mixed model</em>, as presented in the R package <strong>lcmm</strong> <span class="citation">(<span class="citeproc-not-found" data-reference-id="lcmm2017"><strong>???</strong></span>)</span>, is a term used to describe a generalized linear mixed model of the form
+<p>A <em>latent process mixed model</em>, as presented in the R package <strong>lcmm</strong> <span class="citation">(Proust-Lima, Philipps, and Liquet <a href="#ref-lcmm2017" role="doc-biblioref">2017</a>)</span>, is a term used to describe a generalized linear mixed model of the form
 <span class="math display" id="eq:lcmm-measure">\[\begin{equation}
 Y_{ij} = H\left( \Lambda(t_{ij}) + \varepsilon_{ij}~;~ \eta \right),
 \tag{1.1}
@@ -129,7 +129,7 @@ These tools are frequentist, based on maximum likelihood esimation; later we wil
 At worst, the techniques are special cases of one another: e.g. growth curve modelling being a degenerate growth mixture model with one mixture component.
 The word ‘curve’ or ‘trajectory’ is redundant and ‘group’ is synonymous with a mixture component; these semantic variations undoubtedly confuse more than they help clarify.</p>
 <p><em>Growth models</em> are generalized linear models with optional random effects <span class="citation">(Rosen <a href="#ref-Rosen1991" role="doc-biblioref">1991</a>)</span>.
-Thus a growth model curve is an example of a multilevel linear model with random coefficients <span class="citation">(Steele <a href="#ref-Steele2007" role="doc-biblioref">2007</a>)</span> and can be fitted using standard software, such as the R package <strong>lme4</strong> <span class="citation">(<span class="citeproc-not-found" data-reference-id="R-lme4"><strong>???</strong></span>)</span>.
+Thus a growth model curve is an example of a multilevel linear model with random coefficients <span class="citation">(Steele <a href="#ref-Steele2007" role="doc-biblioref">2007</a>)</span> and can be fitted using standard software, such as the R package <strong>lme4</strong> <span class="citation">(Bates et al. <a href="#ref-R-lme4" role="doc-biblioref">2020</a>)</span>.
 There is nothing particularly essential about repeated measures being longitudinal, either: the variable representing time (or age) may be exchanged for any other continuous predictor.</p>
 <p>Here we describe only a family of related methods, aiming to distinguish by explicit technical differences rather than arbitrary naming conventions.
 Every such model can be explained in terms of a hierarchical Bayesian model, aided by the expressive power of the Stan language <span class="citation">(<span class="citeproc-not-found" data-reference-id="R-rstan"><strong>???</strong></span>)</span>.</p>
@@ -140,11 +140,17 @@ Every such model can be explained in terms of a hierarchical Bayesian model, aid
 </div>
 <h3>References</h3>
 <div id="refs" class="references">
+<div id="ref-R-lme4">
+<p>Bates, Douglas, Martin Maechler, Ben Bolker, and Steven Walker. 2020. <em>Lme4: Linear Mixed-Effects Models Using Eigen and S4</em>. <a href="https://github.com/lme4/lme4/">https://github.com/lme4/lme4/</a>.</p>
+</div>
 <div id="ref-Nagin2014">
 <p>Nagin, Daniel S. 2014. “Group-Based Trajectory Modeling: An Overview.” <em>Annals of Nutrition and Metabolism</em> 65 (2-3): 205–10. <a href="https://doi.org/10.1159/000360229">https://doi.org/10.1159/000360229</a>.</p>
 </div>
 <div id="ref-Nagin2010">
 <p>Nagin, Daniel S., and Candice L. Odgers. 2010. “Group-Based Trajectory Modeling in Clinical Research.” <em>Annual Review of Clinical Psychology</em> 6 (1): 109–38. <a href="https://doi.org/10.1146/annurev.clinpsy.121208.131413">https://doi.org/10.1146/annurev.clinpsy.121208.131413</a>.</p>
+</div>
+<div id="ref-lcmm2017">
+<p>Proust-Lima, Cécile, Viviane Philipps, and Benoit Liquet. 2017. “Estimation of Extended Mixed Models Using Latent Classes and Latent Processes: The R Package lcmm.” <em>Journal of Statistical Software</em> 78 (2): 1–56. <a href="https://doi.org/10.18637/jss.v078.i02">https://doi.org/10.18637/jss.v078.i02</a>.</p>
 </div>
 <div id="ref-Rosen1991">
 <p>Rosen, Dietrich Von. 1991. “The Growth Curve Model: A Review.” <em>Communications in Statistics - Theory and Methods</em> 20 (9): 2791–2822. <a href="https://doi.org/10.1080/03610929108830668">https://doi.org/10.1080/03610929108830668</a>.</p>
@@ -162,7 +168,7 @@ Every such model can be explained in terms of a hierarchical Bayesian model, aid
         </div>
       </div>
 <a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="bibliography.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
