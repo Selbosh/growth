@@ -17,9 +17,6 @@ github-repo: Selbosh/growth
 ```{r setup, include=FALSE}
 library(knitr)
 opts_chunk$set(echo = TRUE, comment = '')
-if (is_html_output()) {
-  opts_chunk$set(dev.args = list(type = 'cairo'))
-}
 ```
 
 # Introduction {-}
