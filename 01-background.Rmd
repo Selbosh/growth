@@ -39,7 +39,7 @@ At worst, the techniques are special cases of one another: e.g. growth curve mod
 The word 'curve' or 'trajectory' is redundant and 'group' is synonymous with a mixture component; these semantic variations undoubtedly confuse more than they help clarify.
 
 _Growth models_ are generalized linear models with optional random effects [@Rosen1991].
-Thus a growth model curve is an example of a multilevel linear model with random coefficients [@Steele2007] and can be fitted using standard software, such as the R package **lme4** [@R-lme4].
+As an example of a multilevel mixed linear model [@Steele2007], growth curves can be fitted using standard software, such as the R package **lme4** [@R-lme4].
 There is nothing particularly essential about repeated measures being longitudinal, either: the variable representing time (or age) may be exchanged for any other continuous predictor.
 
 Here we describe only a family of related methods, aiming to distinguish by explicit technical differences rather than arbitrary naming conventions.

@@ -15,8 +15,11 @@ github-repo: Selbosh/growth
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-knitr::write_bib(c(.packages(), 'rstan', 'lcmm', 'lme4'), file = 'packages.bib')
+library(knitr)
+opts_chunk$set(echo = TRUE, comment = '')
+if (is_html_output()) {
+  opts_chunk$set(dev.args = list(type = 'cairo'))
+}
 ```
 
 # Introduction {-}

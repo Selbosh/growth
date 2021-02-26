@@ -5,4 +5,7 @@ Depends:
     bookdown
 Imports: 
     lme4,
-    lcmm
+    lcmm,
+    rstan,
+    rstanarm,
+    brms

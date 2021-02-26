@@ -5,3 +5,8 @@
   margin-top: .75em;
 }
 ```
+
+```{r write-bib, echo = FALSE}
+write_bib(c(.packages(), 'rstan', 'lcmm', 'lme4', 'rstanarm', 'brms'),
+          file = 'packages.bib')
+```

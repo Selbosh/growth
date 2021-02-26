@@ -1,0 +1,84 @@
+# Mixed effects models
+
+A mixed model, also known as a hierarchical or multilevel model, in general contains both random (subject or group level) and fixed (population level) effects.
+
+## Restricted maximum likelihood
+
+The standard way for fitting mixed effects models in R is **lme4** [@R-lme4], which estimates the parameters via restricted maximum likelihood optimization.
+A canonical example dataset is `sleepstudy`, bundled with the package, which records reaction times each day for 18 subjects restricted to three hours of sleep per night.
+The data are visualised in Figure \@ref(fig:sleepstudy).
+
+```{r sleepstudy, fig.cap = 'Average reaction time per day (ms) for 18 subjects in a sleep deprivation study. Each line represents one subject', echo = FALSE}
+data(sleepstudy, package = 'lme4')
+library(ggplot2)
+theme_set(theme_minimal())
+ggplot(sleepstudy) +
+  aes(Days, Reaction, group = Subject) +
+  geom_line() +
+  scale_x_continuous(breaks = seq(0, 8, 2)) +
+  labs(x = 'Days of restricted sleep',
+       y = 'Reaction time (ms)')
+```
+
+Overall, we would probably expect reaction times to increase as the subjects become more sleep-deprived.
+But some subjects surely will have had faster reaction times than others, even before the study began.
+This is modelled using a _random intercept_ coefficient.
+Meanwhile, we might assume each day of sleep deprivation results in the same increase in reaction time for every participant, in which case a common, fixed slope coefficient is appropriate.
+However, if instead we thought the daily effect of sleep deprivation varied between subjects, we could fit _random slopes_ (as well as the random intercept).
+
+In **lme4** syntax, the random intercept model is
+```{r sleep-lme4, message = FALSE}
+library(lme4)
+rand_intercept <- lmer(Reaction ~ Days + (1 | Subject), sleepstudy)
+```
+which yields the following summary output.
+```{r echo = FALSE}
+summary(rand_intercept)
+```
+
+Adding a random slope, we obtain
+```{r sleep-lme4-2, message = FALSE, echo = 1}
+rand_slope <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
+summary(rand_slope)
+```
+
+The correlation between the random effects is close to zero.
+
+## Markov chain Monte Carlo
+
+Researchers who prefer a Bayesian approach can take advantage of the **rstanarm** [@R-rstanarm] and **brms** [@R-brms] packages, which allow specifying analogous Bayesian models, fitted using Hamiltonian Monte Carlo (rather than restricted maximum likelihood) but using the familiar **lme4**-style formula syntax.
+
+If using default priors, the code is nearly identical.
+The package **rstanarm** (applied regression modelling via RStan) has a series of functions with the prefix `stan_` that are analogous to common frequentist methods, e.g. `stan_glm` and, in this case, `stan_lmer`:
+```{r arm-slope, results = 'hide', echo = 2:3, message = FALSE, cache = TRUE}
+options(mc.cores = parallel::detectCores())
+library(rstanarm)
+arm_slope <- stan_lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
+```
+
+```{r echo = FALSE, dependson='arm-slope'}
+arm_slope
+```
+
+Meanwhile, **brms** (Bayesian regression modelling with Stan), which is designed for fitting Bayesian multilevel models, has a single workhorse function, `brm`, which also uses **lme4**-style formulae:
+
+```{r brm-slope, results = 'hide', message = FALSE, cache = TRUE}
+library(brms)
+brm_slope <- brm(Reaction ~ Days + (Days | Subject), sleepstudy)
+```
+
+```{r echo = FALSE, depenson='brm-slope'}
+brm_slope
+```
+
+As with other Stan wrapper packages, if you don't specify any prior distributions, then uninformative ones will be used by default.
+This is usually fine in this case but you'll need to set explicit priors when fitting more complicated models.
+
+All three of **lme4**, **rstanarm** and **brms** yield similar parameter estimates for the sleep deprivation study model with random intercepts and slopes:
+
+- fixed intercept about 251 ms
+- fixed slope about 10.5 ms per day
+- random intercept standard deviation about 24 ms
+- random slope standard deviation about 6 ms per day
+- random intercept--slope correlation about 0.07--0.08
+
