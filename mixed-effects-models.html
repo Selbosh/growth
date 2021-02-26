@@ -307,6 +307,68 @@ This is usually fine in this case but you’ll need to set explicit priors when 
 <li>random slope standard deviation about 6 ms per day</li>
 <li>random intercept–slope correlation about 0.07–0.08</li>
 </ul>
+<p>At this juncture, it’s worth pointing out that the package <strong>lcmm</strong> <span class="citation">(Proust-Lima, Philipps, and Liquet <a href="#ref-lcmm2017" role="doc-biblioref">2017</a>)</span> can be used to compute a model equivalent to <strong>lme4</strong> when the number of latent classes is specified to be equal to one.
+The function <code>hlme</code> (or <code>lcmm</code> with <code>link = 'linear'</code>) has a slightly different way of specifying the formulae: random effects and levels of the model are specified separately from the fixed effects via the <code>random</code> and <code>subject</code> arguments, rather than the <strong>lme4</strong>-style <code>(var | group)</code> syntax.</p>
+<p>For some reason, the variable passed to <code>subject</code> also has to be numeric, rather than a factor.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="mixed-effects-models.html#cb9-1"></a><span class="kw">library</span>(lcmm)</span>
+<span id="cb9-2"><a href="mixed-effects-models.html#cb9-2"></a>lcm_slope &lt;-<span class="st"> </span><span class="kw">hlme</span>(<span class="dt">fixed =</span> Reaction <span class="op">~</span><span class="st"> </span>Days,</span>
+<span id="cb9-3"><a href="mixed-effects-models.html#cb9-3"></a>                  <span class="dt">random =</span> <span class="op">~</span><span class="st"> </span>Days,</span>
+<span id="cb9-4"><a href="mixed-effects-models.html#cb9-4"></a>                  <span class="dt">subject =</span> <span class="st">&#39;Subject&#39;</span>,</span>
+<span id="cb9-5"><a href="mixed-effects-models.html#cb9-5"></a>                  <span class="dt">ng =</span> <span class="dv">1</span>,</span>
+<span id="cb9-6"><a href="mixed-effects-models.html#cb9-6"></a>                  <span class="dt">data =</span> <span class="kw">transform</span>(sleepstudy, <span class="dt">Subject =</span> <span class="kw">as.numeric</span>(Subject)))</span></code></pre></div>
+<pre><code>Heterogenous linear mixed model 
+     fitted by maximum likelihood method 
+ 
+hlme(fixed = Reaction ~ Days, random = ~Days, subject = &quot;Subject&quot;, 
+    ng = 1, data = transform(sleepstudy, Subject = as.numeric(Subject)))
+ 
+Statistical Model: 
+     Dataset: transform(sleepstudy, Subject = as.numeric(Subject)) 
+     Number of subjects: 18 
+     Number of observations: 180 
+     Number of latent classes: 1 
+     Number of parameters: 6  
+ 
+Iteration process: 
+     Convergence criteria satisfied 
+     Number of iterations:  17 
+     Convergence criteria: parameters= 9.7e-07 
+                         : likelihood= 1.6e-08 
+                         : second derivatives= 2.5e-15 
+ 
+Goodness-of-fit statistics: 
+     maximum log-likelihood: -875.97  
+     AIC: 1763.94  
+     BIC: 1769.28  
+ 
+ 
+Maximum Likelihood Estimates: 
+ 
+Fixed effects in the longitudinal model:
+
+               coef      Se    Wald p-value
+intercept 251.40511 6.63228  37.906 0.00000
+Days       10.46729 1.50224   6.968 0.00000
+
+
+Variance-covariance matrix of the random-effects:
+          intercept    Days
+intercept 565.51538        
+Days       11.05543 32.6822
+
+                              coef      Se
+Residual standard error:  25.59182 1.50838</code></pre>
+<p>The summary output includes a variance-covariance matrix for the random effects, rather than giving correlations.
+It’s easy enough to calculate one from the other and verify the random correlation estimate is equivalent to the other packages:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="mixed-effects-models.html#cb11-1"></a>vc &lt;-<span class="st"> </span><span class="kw">VarCovRE</span>(lcm_slope)[, <span class="st">&#39;coef&#39;</span>]</span></code></pre></div>
+<pre><code>                          coef        Se Wald test p_value
+ Var(intercept)      565.51538 265.29710                  
+ Cov(intercept,Days)  11.05543  42.85392   0.25798 0.79642
+ Var(Days)            32.68220  13.57460                  </code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="mixed-effects-models.html#cb13-1"></a>vc[<span class="st">&#39; Cov(intercept,Days)&#39;</span>] <span class="op">/</span><span class="st"> </span><span class="kw">sqrt</span>(vc[<span class="st">&#39; Var(intercept)&#39;</span>]) <span class="op">/</span><span class="st"> </span><span class="kw">sqrt</span>(vc[<span class="st">&#39; Var(Days)&#39;</span>])</span></code></pre></div>
+<pre><code> Cov(intercept,Days) 
+          0.08132008 </code></pre>
+<p>However if you aren’t planning on fitting a mixture model then the other packages probably have more concise syntax.</p>
 
 </div>
 </div>
@@ -320,6 +382,9 @@ This is usually fine in this case but you’ll need to set explicit priors when 
 </div>
 <div id="ref-R-rstanarm">
 <p>Gabry, Jonah, and Ben Goodrich. 2020. <em>Rstanarm: Bayesian Applied Regression Modeling via Stan</em>. <a href="https://CRAN.R-project.org/package=rstanarm">https://CRAN.R-project.org/package=rstanarm</a>.</p>
+</div>
+<div id="ref-lcmm2017">
+<p>Proust-Lima, Cécile, Viviane Philipps, and Benoit Liquet. 2017. “Estimation of Extended Mixed Models Using Latent Classes and Latent Processes: The R Package lcmm.” <em>Journal of Statistical Software</em> 78 (2): 1–56. <a href="https://doi.org/10.18637/jss.v078.i02">https://doi.org/10.18637/jss.v078.i02</a>.</p>
 </div>
 </div>
             </section>
