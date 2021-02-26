@@ -1,5 +1,9 @@
 eq:lcmm-measure
 eq:lcmm-latent
+fig:sleepstudy
 background
 latent-processes
 semantic-growth
+mixed-effects-models
+restricted-maximum-likelihood
+markov-chain-monte-carlo
