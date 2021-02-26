@@ -82,3 +82,29 @@ All three of **lme4**, **rstanarm** and **brms** yield similar parameter estimat
 - random slope standard deviation about 6 ms per day
 - random intercept--slope correlation about 0.07--0.08
 
+At this juncture, it's worth pointing out that the package **lcmm** [@lcmm2017] can be used to compute a model equivalent to **lme4** when the number of latent classes is specified to be equal to one.
+The function `hlme` (or `lcmm` with `link = 'linear'`) has a slightly different way of specifying the formulae: random effects and levels of the model are specified separately from the fixed effects via the `random` and `subject` arguments, rather than the **lme4**-style `(var | group)` syntax.
+
+For some reason, the variable passed to `subject` also has to be numeric, rather than a factor.
+```{r message=FALSE, results='hide'}
+library(lcmm)
+lcm_slope <- hlme(fixed = Reaction ~ Days,
+                  random = ~ Days,
+                  subject = 'Subject',
+                  ng = 1,
+                  data = transform(sleepstudy, Subject = as.numeric(Subject)))
+```
+
+```{r echo = FALSE}
+summary(lcm_slope)
+```
+
+The summary output includes a variance-covariance matrix for the random effects, rather than giving correlations.
+It's easy enough to calculate one from the other and verify the random correlation estimate is equivalent to the other packages:
+
+```{r}
+vc <- VarCovRE(lcm_slope)[, 'coef']
+vc[' Cov(intercept,Days)'] / sqrt(vc[' Var(intercept)']) / sqrt(vc[' Var(Days)'])
+```
+
+However if you aren't planning on fitting a mixture model then the other packages probably have more concise syntax.
